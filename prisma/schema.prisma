@@ -1,0 +1,107 @@
+// Prisma schema for the Collaborative Project Management Tool
+// Database: SQLite (file-based, zero-config for local dev)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  username     String   @unique
+  email        String   @unique
+  passwordHash String
+  displayName  String
+  avatarUrl    String?
+  createdAt    DateTime @default(now())
+
+  ownedProjects Project[]       @relation("ProjectOwner")
+  memberships   ProjectMember[]
+  assignedTasks Task[]          @relation("TaskAssignee")
+  createdTasks  Task[]          @relation("TaskCreator")
+  comments      TaskComment[]
+  notifications Notification[]
+}
+
+model Project {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  ownerId     String
+  owner       User     @relation("ProjectOwner", fields: [ownerId], references: [id])
+  createdAt   DateTime @default(now())
+
+  members       ProjectMember[]
+  columns       Column[]
+  tasks         Task[]
+  notifications Notification[]
+}
+
+model ProjectMember {
+  id        String  @id @default(cuid())
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role      String  @default("MEMBER") // OWNER | MEMBER
+
+  @@unique([projectId, userId])
+}
+
+model Column {
+  id        String  @id @default(cuid())
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  name      String
+  position  Int
+
+  tasks Task[]
+}
+
+model Task {
+  id          String    @id @default(cuid())
+  columnId    String
+  column      Column    @relation(fields: [columnId], references: [id], onDelete: Cascade)
+  projectId   String
+  project     Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  title       String
+  description String?
+  assigneeId  String?
+  assignee    User?     @relation("TaskAssignee", fields: [assigneeId], references: [id])
+  position    Int
+  dueDate     DateTime?
+  createdById String
+  createdBy   User      @relation("TaskCreator", fields: [createdById], references: [id])
+  createdAt   DateTime  @default(now())
+
+  comments      TaskComment[]
+  notifications Notification[]
+}
+
+model TaskComment {
+  id        String   @id @default(cuid())
+  taskId    String
+  task      Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id])
+  content   String
+  createdAt DateTime @default(now())
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      String // e.g. ASSIGNED, COMMENT, MEMBER_ADDED
+  message   String
+  projectId String?
+  project   Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  taskId    String?
+  task      Task?    @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
