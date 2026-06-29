@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign up · TeamBoard</title>
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <a class="brand" href="/landing.html" style="text-decoration:none"><span class="logo">TB</span> TeamBoard</a>
+      <h1>Create your account</h1>
+      <p class="muted" style="margin-top:-6px">Start collaborating in minutes.</p>
+
+      <div class="form-error hidden" id="form-error"></div>
+
+      <form id="register-form" novalidate>
+        <div class="field">
+          <label for="displayName">Display name</label>
+          <input id="displayName" name="displayName" type="text" placeholder="Alice Johnson" autocomplete="name" />
+        </div>
+        <div class="field">
+          <label for="username">Username</label>
+          <input id="username" name="username" type="text" placeholder="alice" autocomplete="username" required />
+        </div>
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" placeholder="alice@example.com" autocomplete="email" required />
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" placeholder="At least 6 characters" autocomplete="new-password" required />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Create account</button>
+      </form>
+
+      <p class="auth-foot">Already have an account? <a href="/login.html">Log in</a></p>
+    </div>
+  </div>
+  <script type="module" src="/js/auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Log in · TeamBoard</title>
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+  <div class="auth-wrap">
+    <div class="auth-card">
+      <a class="brand" href="/landing.html" style="text-decoration:none"><span class="logo">TB</span> TeamBoard</a>
+      <h1>Welcome back</h1>
+      <p class="muted" style="margin-top:-6px">Log in to your collaborative boards.</p>
+
+      <div class="form-error hidden" id="form-error"></div>
+
+      <form id="login-form" novalidate>
+        <div class="field">
+          <label for="login">Username or email</label>
+          <input id="login" name="login" type="text" autocomplete="username" placeholder="alice or alice@example.com" required />
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" autocomplete="current-password" placeholder="••••••••" required />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Log in</button>
+      </form>
+
+      <p class="auth-foot">New here? <a href="/register.html">Create an account</a></p>
+
+      <div class="demo-hint">
+        <b>Demo logins</b> — <code>alice</code>, <code>bob</code>, or <code>carol</code><br />
+        password: <code>password123</code>
+      </div>
+    </div>
+  </div>
+  <script type="module" src="/js/auth.js"></script>
+</body>
+</html>
